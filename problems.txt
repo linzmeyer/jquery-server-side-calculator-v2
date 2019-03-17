@@ -1,0 +1,9 @@
+1. -----------------------------------------------------------------------------
+Problem: I am getting a super long console log server side in my first post 
+request.
+
+Solution: When I was working with my request object on the serverside, I made
+the mistake of working with the entire request, not the request.body.  This was
+throwing an error because I was trying to pass around the entire request. DON'T
+FORGET ABOUT BODY. Double check that you're using req.body.
+--------------------------------------------------------------------------------

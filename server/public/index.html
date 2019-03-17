@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="scripts/jquery-3.3.1.min.js"></script>
+      <script src="scripts/client.js"></script>
+      <title>Tab Title</title>
+      <link rel="stylesheet" href="styles/style.css">
+  </head>
+
+  <body>
+    <h1 id="header-main">Server Side Calculator</h1>
+    <main>
+      <div id="div-user-input">
+        <form>
+          <label>First Input</label>
+          <input id="in-1" type="number" placeholder="number">
+          <button class="operator" id="+">+</button>
+          <button class="operator" id="-">-</button>
+          <button class="operator" id="*">*</button>
+          <button class="operator" id="/">/</button>
+          <label>Second Input</label>
+          <input id="in-2" type="number" placeholder="number">
+          <button class="equal" id="=">=</button>
+          <button id="btn-clear-fields">C</button>
+        </form>
+      </div>
+
+      <header>
+        <h2 id="h2-result">
+          <!-- jQuery will append calcultor result here -->
+        </h2>
+      </header>
+      <div id="div-history">
+        <header id="header-history">
+          <!-- jQuery will append history header here -->
+        </header>
+        <ul id="ul-history">
+          <!-- jQuery will append calcultor history here -->
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>
