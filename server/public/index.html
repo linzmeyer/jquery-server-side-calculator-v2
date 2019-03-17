@@ -10,36 +10,62 @@
   </head>
 
   <body>
-    <h1 id="header-main">Server Side Calculator</h1>
-    <main>
-      <div id="div-user-input">
-        <form>
-          <label>First Input</label>
-          <input id="in-1" type="number" placeholder="number">
-          <button class="operator" id="+">+</button>
-          <button class="operator" id="-">-</button>
-          <button class="operator" id="*">*</button>
-          <button class="operator" id="/">/</button>
-          <label>Second Input</label>
-          <input id="in-2" type="number" placeholder="number">
-          <button class="equal" id="=">=</button>
-          <button id="btn-clear-fields">C</button>
-        </form>
-      </div>
+    <div id="container">
+      <header>
+        <h1 id="header-main">Server Side Calculator</h1>
+      </header>
+
+      <main>
+        <div id="div-user-input">
+          <form>
+            <div id="div-in-clear">
+              <input id="in-1"></input>
+              <button id="btn-clear-fields">C</button>
+            </div>
+            <div id="div-num-row-789">
+              <button id="7" class="btn-num">7</button>
+              <button id="8" class="btn-num">8</button>
+              <button id="9" class="btn-num">9</button>
+              <button id="+" class="operator">+</button>
+            </div>
+            <div id="div-num-row-456">
+              <button id="4" class="btn-num">4</button>
+              <button id="5" class="btn-num">5</button>
+              <button id="6" class="btn-num">6</button>
+              <button id="-" class="operator">-</button>
+            </div>
+            <div id="div-num-row-123">
+              <button id="1" class="btn-num">1</button>
+              <button id="2" class="btn-num">2</button>
+              <button id="3" class="btn-num">3</button>
+              <button id="*" class="operator">×</button>
+            </div>
+            <div id="div-num-row-0">
+              <button id="0">0</button>
+              <button id=".">.</button>
+              <button id="=" class="equal">=</button>
+              <button id="/" class="operator">÷</button>
+            </div>
+          </form>
+        </div>
+      </main>
 
       <header>
         <h2 id="h2-result">
-          <!-- jQuery will append calcultor result here -->
+          <!-- jQuery will append calcultor last calculation here -->
         </h2>
       </header>
-      <div id="div-history">
-        <header id="header-history">
+
+      <footer>
+        <div id="div-history">
+          <h3 id="header-history">
           <!-- jQuery will append history header here -->
-        </header>
-        <ul id="ul-history">
-          <!-- jQuery will append calcultor history here -->
-        </ul>
-      </div>
-    </main>
+          </h3>
+          <ul id="ul-history">
+            <!-- jQuery will append calcultor history here -->
+          </ul>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
