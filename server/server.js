@@ -49,7 +49,7 @@ app.get( '/get-DOMInfo', ( req, res ) => {
     currentAnswer: answer,
     history: { inputs: inputsHistory, results: resultsHistory }
   };
-  console.log( 'responding', domInfo );
+  console.log( 'GET request response:', domInfo );
   // Good servers always respond!!!
   res.send( domInfo );
 });
@@ -76,7 +76,7 @@ app.post( '/post-input', ( req, res ) => {
   resultsHistory.push( answer );
   console.log( 'result was pushed to resultsHistory' );
 
-  console.log( 'responding', 201 );
+  console.log( 'POST request response:', 201 );
   res.sendStatus(201);
 });
 

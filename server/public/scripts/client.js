@@ -211,9 +211,9 @@ function renderDOM( info ) {
   for ( let i = 0; i < info.history.inputs.length; i++ ) {
     $( '#ul-history' ).append(
       `<li><h3>${
-        info.history.inputs[i].input1 + ' ' +
+        info.history.inputs[i].in1 + ' ' +
         info.history.inputs[i].operator + ' ' +
-        info.history.inputs[i].input2
+        info.history.inputs[i].in2
       } = ${info.history.results[i]}</h3></li>`
     );
   }
@@ -232,10 +232,19 @@ function validate( inObj ) {
   console.log( 'in validate' );
 
   let failedMessage = 'user input validation test failed';
+
+
+  if ( inObj.operator === '' ) {
+    console.log( failedMessage );
+    alert( 'Please make sure to select an operator to perform a mathematical evaluation.' );
+    console.log( 'exit validate' );
+    return false;
+  }
+
   // If input is empty string
   if ( inObj.in1 === '' || inObj.in2 === '' ) {
     console.log( failedMessage );
-    alert( 'One of your values is empty text.');
+    alert( 'You did not enter 2 numbers to be evaluated.');
     console.log( 'exit validate' );
     return false;
   }// If input is 0
@@ -263,12 +272,6 @@ function validate( inObj ) {
     return false;
   }
   // Test if an operator was not selected
-  if ( inObj.operator === '' ) {
-    console.log( failedMessage );
-    alert( 'Please make sure to select an operator to perform a mathematical evaluation.' );
-    console.log( 'exit validate' );
-    return false;
-  }
 }
 
 function validateButton( btnClicked ) {
