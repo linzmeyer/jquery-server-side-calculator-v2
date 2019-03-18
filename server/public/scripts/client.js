@@ -1,23 +1,10 @@
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-//// WHOEVER IS GRADING THIS, DON'T WASTE YOUR TIME WITH THIS MESS!!! //////////
-////////////////////////////////////////////////////////////////////////////////
-/////// THIS APP HAS NO BUSINESS EXISTING //////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-///////// IF YOU FEEL COMPELLED TO CONTINUE, DON'T SAY I DIDN'T WARN YOU ///////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-
-
 /*******************************************************************************
 *** Globals ********************************************************************
 *******************************************************************************/
 
 // Array to hold stuff
 let charArray = [];
-
+// Object to hold userInput data
 let userInputs = {
   in1: '',
   operator: '',
@@ -47,7 +34,6 @@ function addEventListeners() {
 }
 
 function addInputChar ( ch ) {
-  console.log( 'in addInputChar' );
   charArray.push( ch );
   let result = '';
   for ( let character of charArray ) {
@@ -68,7 +54,6 @@ function clearDOM() {
 // - Reset input values to ''
 // - Focus on first input field
 function clearFields() {
-  console.log( 'in clearFields' );
   $( '#in-1' ).val('');
   charArray = [];
   userInputs.in1 = '';
@@ -81,30 +66,23 @@ function clearFields() {
 //   - THEN ...
 //     - Run renderDOM( domInfo ) to empty and append info of server req object
 function getDOMInfo() {
-  console.log( 'in getDOMInfo' );
-  console.log( 'start get request' );
   $.ajax({
     type: 'GET',
     url: '/get-DOMInfo'
   }).then(function ( domInfo ) {
-    console.log( domInfo );
 
     let answer = domInfo.currentAnswer;
     let inputsArr = domInfo.history.inputs;
     let resultsArr = domInfo.history.results;
 
     renderDOM( answer, inputsArr, resultsArr );
-    console.log( 'end get request' );
-    console.log( 'end post request.' );
   }).catch(function ( error ) {
-    console.log( 'Somthing went wrong with getDOMInfo get request' );
     alert( 'Something went wrong. Check client console' );
   });
 }
 
 function hndlAddInputChar( e ) {
   e.preventDefault();
-  console.log( 'in hndlAddInputChar' );
 
   // if button dosn't pass validation tests
   if ( validateButton( this ) === false ) {
@@ -119,11 +97,9 @@ function hndlAddInputChar( e ) {
 // EVENT HANDLER
 // - Run clearFields to reset DOM info
 function hndlClearFields( e ) {
-  console.log( 'in hndlClearFields' );
   e.preventDefault();
   clearFields();
   removeHnld();
-  console.log( 'exit hndlClearFields' );
 }
 
 // EVENT HANDLER
@@ -135,7 +111,6 @@ function hndlClearFields( e ) {
 //   - Execute a get request (see getDOMInfo())
 function hndlPostInput( e ) {
   e.preventDefault();
-  console.log( 'in hndlPostInput' );
   removeHnld();
   // If input validation fails, leave this function
   if ( validate( userInputs ) === false ) {
@@ -176,7 +151,6 @@ function hndlSetUserInputs( e ) {
 
 function hndlsetInput2( e ) {
   e.preventDefault();
-  console.log( 'in hndlSetInput2' );
   userInputs.in2 += $(this).attr('id');
 }
 
@@ -200,7 +174,6 @@ function removeHnld() {
 // - Clear DOM result header and history list
 // - Append elements to render page
 function renderDOM( finalEval, insArr, resultsArr ) {
-  console.log( 'in renderDOM' );
   console.log( 'inputs history:', insArr );
   console.log( 'results history:', resultsArr );
   console.log( 'final answer:', finalEval );
@@ -224,11 +197,9 @@ function renderDOM( finalEval, insArr, resultsArr ) {
       } = ${resultsArr[i]}</h3></li>`
     );
   }
-  console.log( 'exit renderDOM' );
 }
 
 function setUserInputs( v1, operator, v2 ) {
-  console.log( 'in setUserInputs');
   // Store values in global variable
   userInputs.in1 = v1;
   userInputs.operator = operator;
@@ -236,7 +207,6 @@ function setUserInputs( v1, operator, v2 ) {
 
 // User input validation tests for input fields and button click
 function validate( inObj ) {
-  console.log( 'in validate' );
 
   let failedMessage = 'user input validation test failed';
 
@@ -244,7 +214,6 @@ function validate( inObj ) {
   if ( inObj.operator === '' ) {
     console.log( failedMessage );
     alert( 'Please make sure to select an operator to perform a mathematical evaluation.' );
-    console.log( 'exit validate' );
     return false;
   }
 
@@ -252,30 +221,25 @@ function validate( inObj ) {
   if ( inObj.in1 === '' || inObj.in2 === '' ) {
     console.log( failedMessage );
     alert( 'You did not enter 2 numbers to be evaluated.');
-    console.log( 'exit validate' );
     return false;
   }// If input is 0
   else if ( inObj.operator === '/' && inObj.in2 === 0 ) {
     console.log( failedMessage );
     alert( `If you leave an input field empty, it will be interpreted as '0'. If you want to divide by zero you will have to go to another universe to do so.`);
-    console.log( 'exit validate' );
     return false;
   }// If input is undefined
   else if ( inObj.in1 === undefined || inObj.in2 === undefined ) {
     console.log( failedMessage );
     alert( 'One of your values is undefined.' );
-    console.log( 'exit validate' );
     return false;
   }// If input is null
   else if ( inObj.in1 === null || inObj.in2 === null ) {
     alert( 'One of your values is null.' );
-    console.log( 'exit validate' );
     return false;
   }// If input is NaN
   else if ( isNaN(inObj.in1) || isNaN(inObj.in2) ) {
     console.log( failedMessage );
     alert( 'One of your values is not a number.' );
-    console.log( 'exit validate' );
     return false;
   }
   // Test if an operator was not selected
