@@ -88,7 +88,12 @@ function getDOMInfo() {
     url: '/get-DOMInfo'
   }).then(function ( domInfo ) {
     console.log( domInfo );
-    renderDOM( domInfo );
+
+    let answer = domInfo.currentAnswer;
+    let inputsArr = domInfo.history.inputs;
+    let resultsArr = domInfo.history.results;
+
+    renderDOM( answer, inputsArr, resultsArr );
     console.log( 'end get request' );
     console.log( 'end post request.' );
   }).catch(function ( error ) {
@@ -194,9 +199,11 @@ function removeHnld() {
 // - Clear inputs, focus, & reset the value of global variable (operator)
 // - Clear DOM result header and history list
 // - Append elements to render page
-function renderDOM( info ) {
+function renderDOM( finalEval, insArr, resultsArr ) {
   console.log( 'in renderDOM' );
-  console.log( 'info:', info );
+  console.log( 'inputs history:', insArr );
+  console.log( 'results history:', resultsArr );
+  console.log( 'final answer:', finalEval );
 
   // Clear inputs, focus, & reset the value of global variable (operator)
   clearFields();
@@ -204,17 +211,17 @@ function renderDOM( info ) {
   clearDOM();
 
   // Append result
-  $( '#h2-result' ).append( `<h2>Last Calculation: ${info.currentAnswer}</h2>` );
+  $( '#h2-result' ).append( `<h2>Last Calculation: ${finalEval}</h2>` );
   // Append history header
   $( '#header-history' ).append( `<h2>History Of Your Calculations</h2>` );
   // Append history list
-  for ( let i = 0; i < info.history.inputs.length; i++ ) {
+  for ( let i = 0; i < insArr.length; i++ ) {
     $( '#ul-history' ).append(
       `<li><h3>${
-        info.history.inputs[i].in1 + ' ' +
-        info.history.inputs[i].operator + ' ' +
-        info.history.inputs[i].in2
-      } = ${info.history.results[i]}</h3></li>`
+        insArr[i].in1 + ' ' +
+        insArr[i].operator + ' ' +
+        insArr[i].in2
+      } = ${resultsArr[i]}</h3></li>`
     );
   }
   console.log( 'exit renderDOM' );
