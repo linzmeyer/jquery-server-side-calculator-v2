@@ -35,6 +35,17 @@ $( document ).ready( readyNow );
 *** FUNCTION DEFINITIONS * A-Z *************************************************
 *******************************************************************************/
 
+function addEventListeners() {
+  // - Listen for click on .equal class els, run hndlPostInput
+  $( '.equal' ).on( 'click', hndlPostInput );
+  // - Listen for click on #btn-clear-fields, run hndlClearFields
+  $( '#btn-clear-fields' ).on( 'click', hndlClearFields );
+  // - Listen for click on the .operator class, run hndlSetUserInputs
+  $( '.operator' ).on( 'click', hndlSetUserInputs );
+
+  $( '.in' ).on( 'click', hndlAddInputChar );
+}
+
 function addInputChar ( ch ) {
   console.log( 'in addInputChar' );
   charArray.push( ch );
@@ -112,7 +123,7 @@ function hndlClearFields( e ) {
 
 function hndlsetInput2( e ) {
   e.preventDefault();
-  console.log( 'in get input2' );
+  console.log( 'in hndlSetInput2' );
   userInputs.in2 += $(this).attr('id');
 }
 
@@ -143,7 +154,7 @@ function hndlPostInput( e ) {
   }).catch( function( error ) {
     console.log( `Error adding item`, error );
     console.log( 'Somthing went wrong with hndlPostInput post request.' );
-    alert( 'Something went wrong. Check client console' );
+    alert( 'Something went wrong with. Could not handle post request. Check client console' );
   });
 }
 
@@ -171,14 +182,8 @@ function readyNow() {
     //  getDOMInfo();
 
   // EVENT LISTENERS
-  // - Listen for click on .equal class els, run hndlPostInput
-  $( '.equal' ).on( 'click', hndlPostInput );
-  // - Listen for click on #btn-clear-fields, run hndlClearFields
-  $( '#btn-clear-fields' ).on( 'click', hndlClearFields );
-  // - Listen for click on the .operator class, run hndlSetUserInputs
-  $( '.operator' ).on( 'click', hndlSetUserInputs );
+  addEventListeners();
 
-  $( '.in' ).on( 'click', hndlAddInputChar );
 }
 
 function removeHnld() {
@@ -227,30 +232,30 @@ function validate( inObj ) {
 
   let failedMessage = 'user input validation test failed';
   // If input is empty string
-  if ( inObj.input1 === '' || inObj.input2 === '' ) {
+  if ( inObj.in1 === '' || inObj.in2 === '' ) {
     console.log( failedMessage );
     alert( 'One of your values is empty text.');
     console.log( 'exit validate' );
     return false;
   }// If input is 0
-  else if ( inObj.input2 === 0 ) {
+  else if ( inObj.operator === '/' && inObj.in2 === 0 ) {
     console.log( failedMessage );
     alert( `If you leave an input field empty, it will be interpreted as '0'. If you want to divide by zero you will have to go to another universe to do so.`);
     console.log( 'exit validate' );
     return false;
   }// If input is undefined
-  else if ( inObj.input1 === undefined || inObj.input2 === undefined ) {
+  else if ( inObj.in1 === undefined || inObj.in2 === undefined ) {
     console.log( failedMessage );
     alert( 'One of your values is undefined.' );
     console.log( 'exit validate' );
     return false;
   }// If input is null
-  else if ( inObj.input1 === null || inObj.input2 === null ) {
+  else if ( inObj.in1 === null || inObj.in2 === null ) {
     alert( 'One of your values is null.' );
     console.log( 'exit validate' );
     return false;
   }// If input is NaN
-  else if ( isNaN(inObj.input1) || isNaN(inObj.input2) ) {
+  else if ( isNaN(inObj.in1) || isNaN(inObj.in2) ) {
     console.log( failedMessage );
     alert( 'One of your values is not a number.' );
     console.log( 'exit validate' );
