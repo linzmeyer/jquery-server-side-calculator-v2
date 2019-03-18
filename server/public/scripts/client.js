@@ -43,7 +43,7 @@ function addInputChar ( ch ) {
     // Accumulate string from charArray
     result += character;
   }
-  // return string
+  // Return string
   return result;
 }
 
@@ -55,8 +55,9 @@ function clearDOM() {
 }
 
 // - Reset input values to ''
-// - clear charArray
+// - Clear charArray
 // - Focus on first input field
+// - Reset property values of global object (userInputs)
 function clearFields() {
   $( '#in-1' ).val('');
   charArray = [];
@@ -65,45 +66,55 @@ function clearFields() {
   userInputs.operator = '';
 }
 
+// AJAX GET REQUEST
 // - Execute a GET request for domInfo server-generated object
 //   - { currentAnswer: answer, history: {inputsHistory[], resultsHistory[]} }
 //   - THEN ...
-//     - Run renderDOM( domInfo ) to empty and append info of server req object
+//     - Put request property values in variables to be used in renderDOM
+//     - Run renderDOM with variables to empty and append info of server req object
 function getDOMInfo() {
+  // - Execute a GET request for domInfo server-generated object
   $.ajax({
     type: 'GET',
     url: '/get-DOMInfo'
   }).then(function ( domInfo ) {
-
+    // - Put request property values in variables to be used in renderDOM
     let answer = domInfo.currentAnswer;
     let inputsArr = domInfo.history.inputs;
     let resultsArr = domInfo.history.results;
-
+    // - Run renderDOM with variables to empty and append info of server req object
     renderDOM( answer, inputsArr, resultsArr );
   }).catch(function ( error ) {
     alert( 'Something went wrong. Check client console' );
   });
 }
 
+// EVENT HANDLER
+// - Validate the button clicked
+// - Add input char to current array of chars & store resulting string in a 
+//    variable (mathExpression)
+// - Reset input box value to value of mathExpression.
 function hndlAddInputChar( e ) {
   e.preventDefault();
 
-  // if button dosn't pass validation tests
+  // If button dosn't pass validation tests
   if ( validateButton( this ) === false ) {
     return;
   }
-  // add input char to current array of chars
-  let expression = addInputChar( $(this).attr('id') );
-  // display string of chars
-  $( '#in-1' ).val( expression );
+  // Add input char to current array of chars & store resulting string
+  let mathExpression = addInputChar( $(this).attr('id') );
+  // Display string of chars in input field
+  $( '#in-1' ).val( mathExpression );
 }
 
 // EVENT HANDLER
 // - Run clearFields to reset DOM info
+// - Remove
 function hndlClearFields( e ) {
   e.preventDefault();
   clearFields();
-  removeHnld();
+  // Remove handler from .num class els
+  $( '.num' ).off( 'click', hndlsetInput2 );
 }
 
 // EVENT HANDLER
@@ -171,7 +182,7 @@ function readyNow() {
 }
 
 function removeHnld() {
-  $( '.num' ).off( 'click', hndlsetInput2 );
+  
 }
 
 // - Clear inputs, focus, & reset the value of global variable (operator)

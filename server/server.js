@@ -21,7 +21,7 @@ const PORT = 5000;
 const app = express();
 
 // Use the public directory we made for static files
-app.use(express.static( 'server/public' ));
+app.use( express.static( 'server/public' ));
 
 // Parse the request using body parser
 app.use( bodyParser.urlencoded( {extended: true} ));
