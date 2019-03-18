@@ -3,11 +3,13 @@
 *******************************************************************************/
 
 // Array to hold stuff
-let emptyArray = [];
-// Accumulator
-let totalMonthly = 0;
-// Variable to hold value of last .operator class clicked
-let operator = '';
+let charArray = [];
+
+let userInputs = {
+  in1: '',
+  operator: '',
+  in2: ''
+};
 
 /*******************************************************************************
 *** Application Start **********************************************************
@@ -20,6 +22,18 @@ $( document ).ready( readyNow );
 *** FUNCTION DEFINITIONS * A-Z *************************************************
 *******************************************************************************/
 
+function addInputChar ( ch ) {
+  console.log( 'in addInputChar' );
+  charArray.push( ch );
+  let result = '';
+  for ( let character of charArray ) {
+    //create string from array of chars
+    result += character;
+  }
+  // return string
+  return result;
+}
+
 // Clear DOM result header & history list
 function clearDOM() {
   $( '#h2-result' ).empty();
@@ -29,13 +43,13 @@ function clearDOM() {
 
 // - Reset input values to ''
 // - Focus on first input field
-// - Reset the value of global variable (operator)
 function clearFields() {
   console.log( 'in clearFields' );
   $( '#in-1' ).val('');
-  $( '#in-2' ).val('');
-  $( '#in-1' ).focus();
-  operator = '';
+  charArray = [];
+  userInputs.in1 = '';
+  userInputs.in2 = '';
+  userInputs.operator = '';
 }
 
 // - Execute a GET request for domInfo server-generated object
@@ -59,17 +73,18 @@ function getDOMInfo() {
   });
 }
 
-// - Create object that holds input info to be passed to server
-function getUserInputs() {
-  console.log( 'in getUserInput' );
-  let userInputs = {
-    input1: +$( '#in-1' ).val(),
-    operator: operator,
-    input2: +$( '#in-2' ).val(),
-  };
-  console.log( 'userInputs:', userInputs );
-  console.log( 'exit getUserInput' );
-  return userInputs;
+function hndlAddInputChar( e ) {
+  e.preventDefault();
+  console.log( 'in hndlAddInputChar' );
+
+  // if button dosn't pass validation tests
+  if ( validateButton( this ) === false ) {
+    return;
+  }
+  // add input char to current array of chars
+  let expression = addInputChar( $(this).attr('id') );
+  // display string of chars
+  $( '#in-1' ).val( expression );
 }
 
 // EVENT HANDLER
@@ -78,19 +93,14 @@ function hndlClearFields( e ) {
   console.log( 'in hndlClearFields' );
   e.preventDefault();
   clearFields();
+  removeHnld();
   console.log( 'exit hndlClearFields' );
 }
 
-// EVENT HANDLER
-// - Attached to .operator class elements
-// - Listening for: clicks
-// - Reset the value of global variable (operator) to id of button clicked
-function hndlGetOperator( e ) {
-  // Prevent page refresh
+function hndlsetInput2( e ) {
   e.preventDefault();
-  console.log( 'in hndlGetOperator' );
-  operator = $( this ).attr( 'id' );
-  console.log( 'exit hndlGetOperator' );
+  console.log( 'in get input2' );
+  userInputs.in2 += $(this).attr('id');
 }
 
 // EVENT HANDLER
@@ -103,8 +113,7 @@ function hndlGetOperator( e ) {
 function hndlPostInput( e ) {
   e.preventDefault();
   console.log( 'in hndlPostInput' );
-  // Put user inputs into an object for post request
-  let userInputs = getUserInputs();
+  removeHnld();
   // If input validation fails, leave this function
   if ( validate( userInputs ) === false ) {
     return;
@@ -125,22 +134,42 @@ function hndlPostInput( e ) {
   });
 }
 
+// EVENT HANDLER
+// - Get current value of input field
+// - Get value of attribute id of button clicked
+// - Execute a POST request with the input data object
+function hndlSetUserInputs( e ) {
+  e.preventDefault();
+
+  // Get current value of input field
+  let input1 = $( '#in-1' ).val();
+  // Get value of attribute id of button clicked
+  let operation = $( this ).attr( 'id' );
+
+  $( '.num' ).on( 'click', hndlsetInput2 );
+  setUserInputs( input1, operation);
+}
+
 // - Execute a GET request to render DOM with info from server
 // - Listen for events
 function readyNow() {
   console.log( 'in readyNow' );
   // Execute a GET request to render DOM with info from server
-  getDOMInfo();
+    //  getDOMInfo();
 
   // EVENT LISTENERS
-  // - Listen for click on operator class els, run hdlGetOperator
-  $( '.operator' ).on( 'click', hndlGetOperator );
   // - Listen for click on .equal class els, run hndlPostInput
   $( '.equal' ).on( 'click', hndlPostInput );
   // - Listen for click on #btn-clear-fields, run hndlClearFields
   $( '#btn-clear-fields' ).on( 'click', hndlClearFields );
+  // - Listen for click on the .operator class, run hndlSetUserInputs
+  $( '.operator' ).on( 'click', hndlSetUserInputs );
 
-  console.log( 'exit readyNow' );
+  $( '.in' ).on( 'click', hndlAddInputChar );
+}
+
+function removeHnld() {
+  $( '.num' ).off( 'click', hndlsetInput2 );
 }
 
 // - Clear inputs, focus, & reset the value of global variable (operator)
@@ -169,8 +198,14 @@ function renderDOM( info ) {
       } = ${info.history.results[i]}</h3></li>`
     );
   }
-
   console.log( 'exit renderDOM' );
+}
+
+function setUserInputs( v1, operator, v2 ) {
+  console.log( 'in setUserInputs');
+  // Store values in global variable
+  userInputs.in1 = v1;
+  userInputs.operator = operator;
 }
 
 // User input validation tests for input fields and button click
@@ -214,5 +249,25 @@ function validate( inObj ) {
     alert( 'Please make sure to select an operator to perform a mathematical evaluation.' );
     console.log( 'exit validate' );
     return false;
+  }
+}
+
+function validateButton( btnClicked ) {
+  // store id attribute of button
+  let id = $( btnClicked ).attr( 'id' );
+
+  // if this el has the no-multiple class
+  if ( $(btnClicked).hasClass('no-multiple') ) {
+    // if this character is not in charArr already
+    if ( !charArray.includes(id) ){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else { // if el doesn't have the no-multiple class
+    // add the id of this button to the array
+    return true;
   }
 }
