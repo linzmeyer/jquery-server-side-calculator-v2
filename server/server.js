@@ -47,7 +47,10 @@ app.get( '/get-DOMInfo', ( req, res ) => {
   console.log( 'in get-DOMInfo' );
   let domInfo = {
     currentAnswer: answer,
-    history: { inputs: inputsHistory, results: resultsHistory }
+    history: {
+      inputs: inputsHistory,
+      results: resultsHistory
+    }
   };
   console.log( 'GET request response:', domInfo );
   // Good servers always respond!!!
