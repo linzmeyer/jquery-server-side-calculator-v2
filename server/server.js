@@ -13,11 +13,12 @@ const resultsHistory = require( './modules/results-history' );
 /*******************************************************************************
 *** NODE & EXPRESS SETUP *******************************************************
 *******************************************************************************/
+// This is the port number the server will listen on.
+const PORT = 5000;
+
 
 // Get an instance of Express
 const app = express();
-// This is the port number the server will listen on.
-const PORT = 5000;
 
 // Use the public directory we made for static files
 app.use(express.static( 'server/public' ));
@@ -64,9 +65,17 @@ app.get( '/get-DOMInfo', ( req, res ) => {
 app.post( '/post-input', ( req, res ) => {
   console.log( 'in post-input' );
   let inputs = req.body;
+
+  console.log( 'object recieved:', inputs );
+
   inputsHistory.push( inputs );
   answer = evaluateExpression( inputs );
+  console.log( 'expression evaluated' );
+  console.log( 'the result was', answer );
+
   resultsHistory.push( answer );
+  console.log( 'result was pushed to resultsHistory' );
+
   console.log( 'responding', 201 );
   res.sendStatus(201);
 });

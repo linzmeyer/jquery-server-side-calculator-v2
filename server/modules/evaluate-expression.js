@@ -7,9 +7,9 @@
 function evaluateExpression( inputObj ) {
   console.log( 'in evaluateExpression' );
 
-  let in1 = Number( inputObj.input1 );
+  let in1 = Number( inputObj.in1 );
   let op = inputObj.operator;
-  let in2 = Number( inputObj.input2 );
+  let in2 = Number( inputObj.in2 );
 
   // Based on the operattor chosen, make an operation, and return the result.
   if ( op === '+' ) {

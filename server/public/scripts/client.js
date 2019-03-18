@@ -121,12 +121,6 @@ function hndlClearFields( e ) {
   console.log( 'exit hndlClearFields' );
 }
 
-function hndlsetInput2( e ) {
-  e.preventDefault();
-  console.log( 'in hndlSetInput2' );
-  userInputs.in2 += $(this).attr('id');
-}
-
 // EVENT HANDLER
 // - Put user inputs into an object for post request
 // - If input validation fails, leave this function
@@ -149,6 +143,7 @@ function hndlPostInput( e ) {
     url: '/post-input',
     data: userInputs
   }).then( function( response ) {
+    console.log( 'Post Request Successful!' );
     // Execute a get request that returns data to render to the DOM
     getDOMInfo();
   }).catch( function( error ) {
@@ -172,6 +167,12 @@ function hndlSetUserInputs( e ) {
 
   $( '.num' ).on( 'click', hndlsetInput2 );
   setUserInputs( input1, operation);
+}
+
+function hndlsetInput2( e ) {
+  e.preventDefault();
+  console.log( 'in hndlSetInput2' );
+  userInputs.in2 += $(this).attr('id');
 }
 
 // - Execute a GET request to render DOM with info from server
