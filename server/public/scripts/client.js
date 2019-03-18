@@ -22,22 +22,25 @@ $( document ).ready( readyNow );
 *** FUNCTION DEFINITIONS * A-Z *************************************************
 *******************************************************************************/
 
+// - Listen for click on .equal class els, run hndlPostInput
+// - Listen for click on #btn-clear-fields, run hndlClearFields
+// - Listen for click on the .operator class, run hndlSetUserInputs
+// - Listen for click on the .operator class, run hndlSetUserInputs
 function addEventListeners() {
-  // - Listen for click on .equal class els, run hndlPostInput
   $( '.equal' ).on( 'click', hndlPostInput );
-  // - Listen for click on #btn-clear-fields, run hndlClearFields
   $( '#btn-clear-fields' ).on( 'click', hndlClearFields );
-  // - Listen for click on the .operator class, run hndlSetUserInputs
   $( '.operator' ).on( 'click', hndlSetUserInputs );
-
   $( '.in' ).on( 'click', hndlAddInputChar );
 }
 
+// - Push character into global array (charArray)
+// - Create a string from the array of chars
 function addInputChar ( ch ) {
   charArray.push( ch );
+  // Init accumulator to hold a string value
   let result = '';
   for ( let character of charArray ) {
-    //create string from array of chars
+    // Accumulate string from charArray
     result += character;
   }
   // return string
@@ -52,6 +55,7 @@ function clearDOM() {
 }
 
 // - Reset input values to ''
+// - clear charArray
 // - Focus on first input field
 function clearFields() {
   $( '#in-1' ).val('');
